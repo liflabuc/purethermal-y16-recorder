@@ -14,10 +14,6 @@ en modo `record`, guarda los datos crudos en un gzip binario versionado.
 - Resolución esperada: `160x120`.
 - FPS esperado: `9`.
 
-Si el dispositivo entrega `160x122`, el programa recorta a `160x120` y emite
-una advertencia una sola vez. Las dos filas extra podrían ser telemetría
-embebida, pero esta versión no las interpreta.
-
 ## Instalación
 
 Dependencias de sistema recomendadas en Ubuntu:
@@ -72,7 +68,7 @@ python main.py record --output ./datos --duration 60
 python main.py --backend v4l2 record --output ./datos --duration 10
 ```
 
-Guardar además un CSV derivado en Celsius durante la captura:
+Guardar un CSV en Celsius durante la captura:
 
 ```bash
 python main.py record --output ./datos --save-csv
@@ -195,7 +191,7 @@ timestamp_ms int64 little-endian
 raw_y16      uint16 little-endian[height,width]
 ```
 
-## CSV Celsius opcional
+## CSV Celsius
 
 Columnas:
 
@@ -217,11 +213,6 @@ Conversión:
 celsius = raw_y16 / 100.0 - 273.15
 ```
 
-Esta fórmula solo es válida si el stream Y16 está en modo radiométrico /
-T-linear, es decir, si los valores crudos representan Kelvin multiplicado por
-100. Valida esto experimentalmente contra una referencia física antes de usar
-el CSV como dato científico.
-
 ## Datos crudos, Celsius y display
 
 El programa mantiene separados los datos científicos y la imagen de pantalla:
@@ -231,8 +222,7 @@ El programa mantiene separados los datos científicos y la imagen de pantalla:
 - Imagen normalizada: matriz 8-bit generada solo para `cv2.imshow`.
 
 La imagen normalizada no se guarda como dato térmico. Si OpenCV entrega un
-frame BGR/RGB de tres canales, el programa aborta con un error claro porque eso
-no es Y16 crudo.
+frame BGR/RGB de tres canales, el programa aborta con un error.
 
 ## Configuración
 
