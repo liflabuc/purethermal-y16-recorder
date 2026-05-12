@@ -1,0 +1,9 @@
+# Default capture configuration. CLI arguments override these values.
+thermal_device: /dev/video0
+backend: v4l2
+width: 160
+height: 120
+fps: 9
+output_dir: .
+crop_telemetry_rows: true
+radiometric_tlinear: true
